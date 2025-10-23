@@ -1,0 +1,56 @@
+{
+    "8e4c760e-827d-419b-a36c-941e7f3408a0": {
+        "title": "Пышный Омлет за 5 минут",
+        "category": "Завтрак",
+        "ingredients": "3 яйца, 50мл молока, щепотка соли.",
+        "video": "https://www.google.com/search?q=https://youtu.be/EXAMPLE1",
+        "video_type": "link",
+        "keywords": "омлет, яйца, молоко, быстро",
+        "is_favorite": true
+    },
+    "b5a93d0c-1e24-4d22-b5f7-418c9a0d3b6f": {
+        "title": "Греческий Салат с Фетой",
+        "category": "Салат",
+        "ingredients": "Помидоры, огурцы, фета, маслины, оливковое масло, орегано.",
+        "video": "https://www.google.com/search?q=https://youtu.be/EXAMPLE_SALAD",
+        "video_type": "link",
+        "keywords": "салат, овощи, фета, легкий",
+        "is_favorite": false
+    },
+    "c6e81f21-789a-4c3e-a0b2-4d5f6e7c8d9a": {
+        "title": "Стейк из Тофу с овощами",
+        "category": "Vegan",
+        "ingredients": "Тофу, соевый соус, брокколи, перец болгарский, специи.",
+        "video": "https://www.google.com/search?q=https://youtu.be/EXAMPLE_VEGAN",
+        "video_type": "link",
+        "keywords": "тофу, постный, веган, овощи",
+        "is_favorite": false
+    },
+    "e2d1c0b9-5a4f-3e2d-1b0a-9f8e7d6c5b4a": {
+        "title": "Курица в сливочном соусе",
+        "category": "Основные блюда",
+        "ingredients": "Куриное филе, сливки, чеснок, сыр, паста.",
+        "video": "https://www.google.com/search?q=https://youtu.be/EXAMPLE_MAIN",
+        "video_type": "link",
+        "keywords": "курица, ужин, сливки, быстро",
+        "is_favorite": false
+    },
+    "d4e80649-1597-40d7-91cd-08d16a738609": {
+        "title": "📖 Категории",
+        "category": "/start",
+        "ingredients": "📖 Категории",
+        "video_type": "link",
+        "video": "📖 Категории",
+        "is_favorite": false,
+        "keywords": "📖 категории"
+    },
+    "72475ac5-9aef-4fd2-aae7-6a7fe5903ec2": {
+        "title": "Борщ",
+        "category": "Супы",
+        "ingredients": "Морковь\nУкроп",
+        "video_type": "link",
+        "video": "Без видео",
+        "is_favorite": false,
+        "keywords": "борщ"
+    }
+}
