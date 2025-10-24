@@ -6,9 +6,9 @@ BOT_TOKEN = os.environ.get("TELEGRAM_TOKEN")
 bot = telebot.TeleBot(BOT_TOKEN)
 app = Flask(__name__)
 
-@app.route('/')
+@app.route('/', methods=['GET'])
 def index():
-    return 'OK', 200
+    return 'Bot is running!', 200
 
 WEBHOOK_PATH = f'/{BOT_TOKEN}'
 @app.route(WEBHOOK_PATH, methods=['POST'])
@@ -28,8 +28,11 @@ if RENDER_URL:
     bot.set_webhook(url=WEBHOOK_URL)
     print(f"Webhook установлен: {WEBHOOK_URL}")
 
+def my_log(message):
+    print(f"Обработчик увидел: {message.text}")
+
 @bot.message_handler(commands=['start'])
 def send_welcome(message):
-    print("=== Вызван обработчик /start ===")
-    bot.send_message(message.chat.id, "ТЕСТ! Это Webhook бот.")
+    my_log(message)
+    bot.send_message(message.chat.id, "Тест рабочий!")
 
