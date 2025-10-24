@@ -1,15 +1,12 @@
 import os
-print(f"\n[DEBUG] TELEGRAM_TOKEN from env: {os.environ.get('TELEGRAM_TOKEN')!r}\n")
-
 import telebot
 from telebot import types
 import json
 import uuid
-import os
 from flask import Flask, request
 
 # --- КОНФИГУРАЦИЯ БОТА ---
-BOT_TOKEN = os.environ.get("TELEGRAM_TOKEN")  # Меняй на свой токен через секреты переменных Render!
+BOT_TOKEN = os.environ.get("TELEGRAM_TOKEN")
 bot = telebot.TeleBot(BOT_TOKEN)
 
 RECIPES_FILE = 'recipes.json'
@@ -86,9 +83,7 @@ def generate_recipe_actions_markup(recipe_id):
 # --- ОБРАБОТЧИКИ ---
 @bot.message_handler(commands=['start'])
 def send_welcome(message):
-    print("=== /start обработан ===")
-    bot.send_message(message.chat.id, "Тест!")
-
+    bot.send_message(message.chat.id, "Добро пожаловать! Книга рецептов готова.", reply_markup=generate_main_markup())
 
 @bot.message_handler(func=lambda message: message.text == "📖 Категории")
 def show_categories(message):
@@ -321,7 +316,7 @@ def webhook():
     if request.headers.get('content-type') == 'application/json':
         try:
             json_string = request.get_data().decode('utf-8')
-            print(f"== Получен апдейт от Telegram: {json_string}")  # <-- ЭТУ СТРОКУ Я ДОБАВИЛ!
+            print(f"== Получен апдейт от Telegram: {json_string}")
             update = telebot.types.Update.de_json(json_string)
             bot.process_new_updates([update])
             return '', 200
@@ -340,12 +335,6 @@ if RENDER_URL:
     except Exception as e:
         print(f"Ошибка установки webhook: {e}")
 
-if __name__ != "__main__":
-    # Этот запуск нужен для бота в режиме webhook на сервере!
-    from threading import Thread
-    def run_bot():
-        bot.infinity_polling()
-
-    t = Thread(target=run_bot)
-    t.start()
+# !!! БОЛЬШЕ НИЧЕГО ДОБАВЛЯТЬ И НЕ НАДО !!!
+# polling, infinity_polling, Threads - УБРАТЬ ПОЛНОСТЬЮ!
 
