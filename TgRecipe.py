@@ -9,6 +9,7 @@ from telebot.apihelper import set_webhook # Импорт для очистки w
 
 # --- КОНФИГУРАЦИЯ БОТА ---
 # !!! Вставьте сюда ваш реальный токен от BotFather !!!
+# ПРЕДУПРЕЖДЕНИЕ: Токен должен быть рабочим. Мы используем его, игнорируя переменные окружения.
 BOT_TOKEN = "8424363604:AAE5BZVeVk5pdz_Gc7wE-01EeBAjUIuREus"
 bot = telebot.TeleBot(BOT_TOKEN)
 
@@ -119,6 +120,7 @@ def generate_recipe_actions_markup(recipe_id):
 @bot.message_handler(commands=['start'])
 def send_welcome(message):
     """Отправляет приветственное сообщение и главное меню."""
+    print(f"DEBUG: Получена команда /start от {message.chat.id}") # <-- DEBUG ПЕЧАТЬ
     text = "Добро пожаловать в вашу книгу рецептов! Выберите действие:"
     bot.send_message(message.chat.id, text, reply_markup=generate_main_markup())
 
@@ -485,4 +487,3 @@ if __name__ == "__main__":
     # В локальном режиме Webhook уже сброшен, можно запускать в режиме Polling.
     print("Запуск в режиме Polling...")
     bot.polling(none_stop=True)
-
