@@ -9,7 +9,7 @@ from telebot.apihelper import set_webhook # Импорт для очистки w
 
 # --- КОНФИГУРАЦИЯ БОТА ---
 # !!! Вставьте сюда ваш реальный токен от BotFather !!!
-BOT_TOKEN = "8416255020:AAG20WDAfIa4wMnjSqGtGZBoVFFEoGe4kAo"
+BOT_TOKEN = "8424363604:AAE5BZVeVk5pdz_Gc7wE-01EeBAjUIuREus"
 bot = telebot.TeleBot(BOT_TOKEN)
 
 # Константы для работы с файлами и состояниями
