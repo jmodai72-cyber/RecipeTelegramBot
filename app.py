@@ -177,11 +177,6 @@ def handle_category_selection(call):
     if not filtered:
         bot.send_message(call.message.chat.id, "Рецептов в этой категории нет.")
         return
-
-    markup = types.InlineKeyboardMarkup(row_width=1)
-    for rid, r in filtered.items():
-        markup.add(types.InlineKeyboardButton(r['title'], callback_data=f"show_{rid}"))
-    bot.send_message(call.message.chat.id, f"Рецепты категории {cat}:", reply_markup=markup)
 if not filtered:
     bot.send_message(call.message.chat.id, "Рецептов в этой категории нет.")
     return
@@ -190,6 +185,7 @@ markup = types.InlineKeyboardMarkup(row_width=1)
 for rid, r in filtered.items():
     markup.add(types.InlineKeyboardButton(r['title'], callback_data=f"show_{rid}"))
 bot.send_message(call.message.chat.id, f"Рецепты категории {cat}:", reply_markup=markup)
+
 
 @bot.callback_query_handler(func=lambda c: c.data.startswith('show_'))
 def show_recipe_details(call):
@@ -202,3 +198,26 @@ def show_recipe_details(call):
 
     text = f"🍽 {r['title']}\n\nИнгредиенты:\n{r['ingredients']}\n\nПриготовление:\n{r['steps']}"
     bot.send_message(call.message.chat.id, text)
+
+
+# Flask сервер для Render
+@app.route(f"/{TOKEN}", methods=["POST"])
+def webhook():
+    update = telebot.types.Update.de_json(request.stream.read().decode("utf-8"))
+    bot.process_new_updates([update])
+    return "ok", 200
+
+
+@app.route("/", methods=["GET"])
+def index():
+    return "Бот работает!", 200
+
+
+if __name__ == "__main__":
+    from threading import Thread
+
+    # Запуск бота в отдельном потоке
+    Thread(target=lambda: bot.infinity_polling(skip_pending=True)).start()
+
+    # Запуск Flask-сервера
+    app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
