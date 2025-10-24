@@ -182,6 +182,14 @@ def handle_category_selection(call):
     for rid, r in filtered.items():
         markup.add(types.InlineKeyboardButton(r['title'], callback_data=f"show_{rid}"))
     bot.send_message(call.message.chat.id, f"Рецепты категории {cat}:", reply_markup=markup)
+if not filtered:
+    bot.send_message(call.message.chat.id, "Рецептов в этой категории нет.")
+    return
+
+markup = types.InlineKeyboardMarkup(row_width=1)
+for rid, r in filtered.items():
+    markup.add(types.InlineKeyboardButton(r['title'], callback_data=f"show_{rid}"))
+bot.send_message(call.message.chat.id, f"Рецепты категории {cat}:", reply_markup=markup)
 
 @bot.callback_query_handler(func=lambda c: c.data.startswith('show_'))
 def show_recipe_details(call):
@@ -189,4 +197,8 @@ def show_recipe_details(call):
     rid = call.data.split('_')[1]
     r = RECIPES.get(rid)
     if not r:
-        bot.send_message(call.message.chat.id, "Р
+        bot.send_message(call.message.chat.id, "Рецепт не найден.")
+        return
+
+    text = f"🍽 {r['title']}\n\nИнгредиенты:\n{r['ingredients']}\n\nПриготовление:\n{r['steps']}"
+    bot.send_message(call.message.chat.id, text)
