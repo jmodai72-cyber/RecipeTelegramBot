@@ -86,12 +86,9 @@ def generate_recipe_actions_markup(recipe_id):
 # --- ОБРАБОТЧИКИ ---
 @bot.message_handler(commands=['start'])
 def send_welcome(message):
-    text = "Добро пожаловать в вашу книгу рецептов! Выберите действие:"
-    print(f"Команда /start от {message.chat.id}")
-    try:
-        bot.send_message(message.chat.id, text, reply_markup=generate_main_markup())
-    except Exception as e:
-        print(f"Ошибка отправки: {e}")
+    print("=== /start обработан ===")
+    bot.send_message(message.chat.id, "Тест!")
+
 
 @bot.message_handler(func=lambda message: message.text == "📖 Категории")
 def show_categories(message):
