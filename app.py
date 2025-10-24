@@ -339,11 +339,3 @@ if RENDER_URL:
         print(f"Webhook установлен: {WEBHOOK_URL}")
     except Exception as e:
         print(f"Ошибка установки webhook: {e}")
-
-# --- Локальный запуск Polling ---
-# if __name__ == "__main__":
-#     print("--- Локальный режим ---")
-#     port = int(os.environ.get("PORT", 5000))
-#     print("Запуск в режиме Polling...")
-#     bot.remove_webhook()
-#     bot.polling(none_stop=True)
