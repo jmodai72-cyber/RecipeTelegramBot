@@ -462,13 +462,20 @@ def webhook():
             return 'Processing Error', 200 
     return 'Content-Type Error', 403
 
-# --- КОМАНДА СБРОСА И ЗАПУСК (ИСПРАВЛЕНО) ---
-# Эта команда сброса Webhook должна выполняться при импорте Gunicorn.
-try:
-    set_webhook(token=BOT_TOKEN, url=None)
-    print("Автоматический Webhook сброшен (при Gunicorn импорте).")
-except Exception as e:
-    print(f"Ошибка при сбросе Webhook: {e}")
+# --- АВТОМАТИЧЕСКАЯ УСТАНОВКА WEBHOOK (ИСПОЛЬЗУЕТ ПЕРЕМЕННУЮ ОКРУЖЕНИЯ RENDER) ---
+
+RENDER_URL = os.environ.get("RENDER_EXTERNAL_URL")
+
+if RENDER_URL:
+    WEBHOOK_URL = RENDER_URL + WEBHOOK_PATH
+    try:
+        # Сначала удаляем старый webhook
+        bot.remove_webhook()
+        # Устанавливаем новый
+        bot.set_webhook(url=WEBHOOK_URL)
+        print(f"Автоматический Webhook установлен на: {WEBHOOK_URL}")
+    except Exception as e:
+        print(f"Ошибка при автоматической установке Webhook: {e}")
 
 if __name__ == "__main__":
     # Локальный запуск Flask
@@ -478,3 +485,4 @@ if __name__ == "__main__":
     # В локальном режиме Webhook уже сброшен, можно запускать в режиме Polling.
     print("Запуск в режиме Polling...")
     bot.polling(none_stop=True)
+
