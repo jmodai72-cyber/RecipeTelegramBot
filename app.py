@@ -120,11 +120,12 @@ def generate_recipe_actions_markup(recipe_id):
 @bot.message_handler(commands=['start'])
 def send_welcome(message):
     """Отправляет приветственное сообщение и главное меню."""
-    print(f"DEBUG: Получена команда /start от {message.chat.id}") # <-- DEBUG ПЕЧАТЬ
+    # ПРОВЕРКА: Если эта строка не печатается, обработчик не работает.
+    print(f"DEBUG: Получена команда /start от {message.chat.id}")
     text = "Добро пожаловать в вашу книгу рецептов! Выберите действие:"
     try:
         bot.send_message(message.chat.id, text, reply_markup=generate_main_markup())
-        print(f"DEBUG: Сообщение на команду /start отправлено.") # <-- ДОБАВЛЕНА ПЕЧАТЬ
+        print(f"DEBUG: Сообщение на команду /start отправлено.") 
     except Exception as e:
         # Если bot.send_message не сработает, вы увидите это в логах Render!
         print(f"КРИТИЧЕСКАЯ ОШИБКА ОТПРАВКИ: {e}") 
@@ -484,6 +485,15 @@ if RENDER_URL:
     except Exception as e:
         print(f"Ошибка при автоматической установке Webhook: {e}")
 
+# ДОБАВЛЯЕМ УНИВЕРСАЛЬНЫЙ ОБРАБОТЧИК ДЛЯ ДИАГНОСТИКИ (Должен стоять последним)
+@bot.message_handler(func=lambda message: True, content_types=['text', 'photo', 'video'])
+def echo_all(message):
+    """Универсальный обработчик для всех входящих сообщений."""
+    print(f"DEBUG: Получено необработанное сообщение от {message.chat.id}: {message.text[:20] if message.text else 'Медиа'}")
+    # Поскольку бот в режиме webhook, он не должен отвечать на необработанные сообщения
+    # Здесь мы только логируем, чтобы проверить, что bot.process_new_updates работает.
+    # Если эта строка видна, значит, вся логика работает, но команды не распознаются!
+    
 if __name__ == "__main__":
     # Локальный запуск Flask
     # На Render эта часть НЕ ВЫПОЛНЯЕТСЯ, так как запускается Gunicorn.
