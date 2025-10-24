@@ -1,3 +1,6 @@
+import os
+print(f"\n[DEBUG] TELEGRAM_TOKEN from env: {os.environ.get('TELEGRAM_TOKEN')!r}\n")
+
 import telebot
 from telebot import types
 import json
