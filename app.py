@@ -339,3 +339,13 @@ if RENDER_URL:
         print(f"Webhook установлен: {WEBHOOK_URL}")
     except Exception as e:
         print(f"Ошибка установки webhook: {e}")
+
+if __name__ != "__main__":
+    # Этот запуск нужен для бота в режиме webhook на сервере!
+    from threading import Thread
+    def run_bot():
+        bot.infinity_polling()
+
+    t = Thread(target=run_bot)
+    t.start()
+
