@@ -449,20 +449,32 @@ def index():
 @app.route(WEBHOOK_PATH, methods=['POST'])
 def webhook():
     """Основной обработчик Webhook, принимает сообщения от Telegram."""
+    # Добавляем try/except, чтобы гарантировать возврат 200 OK
     if request.headers.get('content-type') == 'application/json':
-        json_string = request.get_data().decode('utf-8')
-        update = telebot.types.Update.de_json(json_string)
-        bot.process_new_updates([update])
-        return '', 200
+        try:
+            json_string = request.get_data().decode('utf-8')
+            update = telebot.types.Update.de_json(json_string)
+            bot.process_new_updates([update])
+            return '', 200
+        except Exception as e:
+            # Логируем ошибку, но возвращаем 200, чтобы Telegram не переотправлял сообщение
+            print(f"Ошибка при обработке обновления: {e}")
+            return 'Processing Error', 200 
     return 'Content-Type Error', 403
 
-if __name__ == "__main__":
-    # Сбрасываем все активные webhook при старте, чтобы не мешать ручной настройке.
-    # Это важно, так как Render не всегда предоставляет RENDER_EXTERNAL_URL
-    # и старый Webhook может помешать работе.
+# --- КОМАНДА СБРОСА И ЗАПУСК (ИСПРАВЛЕНО) ---
+# Эта команда сброса Webhook должна выполняться при импорте Gunicorn.
+try:
     set_webhook(token=BOT_TOKEN, url=None)
-    print("Автоматический Webhook сброшен.")
-    
-    # Запуск Flask на порту, предоставленном Render (переменная PORT)
+    print("Автоматический Webhook сброшен (при Gunicorn импорте).")
+except Exception as e:
+    print(f"Ошибка при сбросе Webhook: {e}")
+
+if __name__ == "__main__":
+    # Локальный запуск Flask
+    # На Render эта часть НЕ ВЫПОЛНЯЕТСЯ, так как запускается Gunicorn.
+    print("--- Локальный режим ---")
     port = int(os.environ.get("PORT", 5000))
-    app.run(host='0.0.0.0', port=port)
+    # В локальном режиме Webhook уже сброшен, можно запускать в режиме Polling.
+    print("Запуск в режиме Polling...")
+    bot.polling(none_stop=True)
