@@ -1,3 +1,0 @@
-Source: https://github.com/mattpocock/skills/tree/49dd158/skills/productivity/teach
-Docs: https://github.com/mattpocock/skills/blob/main/docs/productivity/teach.md
-License: MIT (see LICENSE)
